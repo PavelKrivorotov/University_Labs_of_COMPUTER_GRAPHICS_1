@@ -1,0 +1,36 @@
+#version 130
+
+uniform vec2 windowSize;
+
+void main() {
+	vec2 xy = gl_FragCoord.xy;
+	xy.x = xy.x / windowSize.x - 0.125; 
+	xy.y = xy.y / windowSize.y - 0.125;
+
+	float width, height;
+	width = windowSize.x;
+	height = windowSize.y;
+
+	float red = (int(width * 19 + height * 13) % 10) / 10.0;
+	float green = (int(width * 11 + height * 14) % 10) / 10.0;
+	float blue = (int(width * 20 + height * 17) % 10) / 10.0;
+
+	vec4 color = vec4(red, green, blue, 1.0);
+
+	float count = 10;
+	float radius = sqrt(pow(1.25, 2.0) + pow(1.25, 2.0)) / count;
+
+	for (int index = 1; index < 10; index++) {
+		float radius1 = radius * (index - 1);
+		float radius2 = radius * index;
+
+		if (sqrt(pow(xy.x, 2.0) + pow(xy.y, 2.0)) > radius1) {
+			if (sqrt(pow(xy.x, 2.0) + pow(xy.y, 2.0)) < radius2) {
+			// color[0] = index / count;
+			color[index % 2] = index / count;
+			}
+		}
+	}
+
+	gl_FragColor = color;
+}
